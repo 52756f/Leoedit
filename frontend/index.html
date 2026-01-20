@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Favicon - Basic -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <title>Leoedit</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
+
+</head>
+
+<body>
+
+    <!-- Left Toolbar -->
+    <div class="leftToolbarContainer">
+        <aside id="asideToolbar">
+            <div class="tool-btn" title="Explorer"><i data-lucide="folder-tree"></i></div>
+            <div class="tool-btn" title="Recent Files"><i data-lucide="clock"></i></div>
+            <div class="tool-btn" title="Outliner"><i data-lucide="list"></i></div>
+            <div class="tool-btn" title="AI Fenster"><i data-lucide="sparkle"></i></div>
+        </aside>
+        <div id="folderlist" class="hidden"></div>
+        <div id="outliner" class="hidden"></div>
+    </div>
+    <div id="right-panel">
+        <nav id="menubar" class="menubar" role="menubar" aria-label="Anwendungsmenü">
+            <div class="menu-item" tabindex="0">
+                Datei
+                <div class="submenu">
+                    <div class="submenu-item" id="menu-new" role="menuitem">
+                        <span class="menu-icon" data-icon="FileText"></span>Neu
+                    </div>
+                    <div class="submenu-item" id="menu-open" role="menuitem">
+                        <span class="menu-icon" data-icon="FolderOpen"></span>Öffnen
+                    </div>
+                    <div class="submenu-item" id="menu-save" role="menuitem" aria-disabled="true">
+                        <span class="menu-icon" data-icon="Save"></span>Speichern (Strg+S)
+                    </div>
+                    <div class="submenu-item" id="menu-save-under" role="menuitem" aria-disabled="true">
+                        <span class="menu-icon" data-icon="Save"></span>Speichern unter (Strg+Shift+S)
+                    </div>
+                    <div class="separator"></div>
+                    <div class="submenu-item" id="menu-close-file" role="menuitem" aria-disabled="true">
+                        <span class="menu-icon" data-icon="SquareX"></span>Schließen
+                    </div>
+                    <div class="submenu-item" id="menu-close-all" role="menuitem" aria-disabled="true">
+                        <span class="menu-icon" data-icon="SquareX"></span>Alle schließen
+                    </div>
+                    <div class="submenu-item" id="menu-quit" role="menuitem">
+                        <span class="menu-icon" data-icon="LogOut"></span>Beenden (Strg+Q)
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item" tabindex="0">
+                Bearbeiten
+                <div class="submenu">
+                    <div class="submenu-item" id="menu-undo" role="menuitem" aria-disabled="true">
+                        <span class="menu-icon" data-icon="RotateCcw"></span>Rückgängig
+                    </div>
+                    <div class="submenu-item" id="menu-redo" role="menuitem" aria-disabled="true">
+                        <span class="menu-icon" data-icon="RotateCw"></span>Wiederholen
+                    </div>
+                    <div class="separator"></div>
+                    <div class="submenu-item" id="menu-cut" role="menuitem" aria-disabled="true">
+                        <span class="menu-icon" data-icon="Scissors"></span>Ausschneiden
+                    </div>
+                    <div class="submenu-item" id="menu-copy" role="menuitem" aria-disabled="true">
+                        <span class="menu-icon" data-icon="Copy"></span>Kopieren
+                    </div>
+                    <div class="submenu-item" id="menu-paste" role="menuitem" aria-disabled="true">
+                        <span class="menu-icon" data-icon="Clipboard"></span>Einfügen
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item" tabindex="0">
+                Ansicht
+                <div class="submenu">
+                    <div class="submenu-item" id="menu-split-vertical" role="menuitem" aria-disabled="false">
+                        <span class="menu-icon" data-icon="SquareSplitVertical"></span>Split Vertikal
+                    </div>
+                    <div class="submenu-item" id="menu-split-horizontal" role="menuitem" aria-disabled="false">
+                        <span class="menu-icon" data-icon="SquareSplitHorizontal"></span>Split Horizontal
+                    </div>
+                    <div class="separator"></div>
+                    <div class="submenu-item" id="menu-reset-split" role="menuitem">
+                        <span class="menu-icon" data-icon="Minimize2"></span>Split zurücksetzen
+                    </div>
+                    <div class="submenu-item" id="menu-close-split" role="menuitem">
+                        <span class="menu-icon" data-icon="SquareX"></span>Split schließen
+                    </div>
+                    <div class="separator"></div>
+                    <div class="submenu-item" id="menu-ai-panel" role="menuitem">
+                        <span class="menu-icon" data-icon="Sparkles"></span>AI Fenster
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item" tabindex="0">
+                Über
+                <div class="submenu">
+                    <div class="submenu-item" id="menu-about" role="menuitem">
+                        <span class="menu-icon" data-icon="HelpCircle"></span>Über Leoedit
+                    </div>
+                    <div class="submenu-item" id="menu-web-test" role="menuitem">
+                        <span class="menu-icon" data-icon="HelpCircle"></span>Web Test
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <main>
+            <div id="tab-container"></div>
+            <div id="editor-container" class="editor-container">
+                <div id="editor-pane-left" class="editor-pane tab_active">
+                    <div id="monaco-editor-left" class="monaco"></div>
+                </div>
+                <div id="editor-divider" class="editor-divider hidden"></div>
+                <div id="editor-pane-right" class="editor-pane hidden">
+                    <div id="monaco-editor-right" class="monaco"></div>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- Unsaved Changes Modal -->
+        <div id="unsavedModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <h3>Ungesicherte Änderungen</h3>
+                <p>Sie haben ungesicherte Änderungen. Was möchten Sie tun?</p>
+                <div class="modal-buttons">
+                    <button id="saveBtn">Speichern</button>
+                    <button id="dontSaveBtn">Nicht speichern</button>
+                    <button id="cancelCloseBtn">Abbrechen</button>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div id="status"></div>
+        </footer>
+    </div>
+
+    <script src="./src/main.js" type="module"></script>
+    <script>
+        function webtest() {
+
+            // 1. Erstelle einen Anchor-Tag (Link)
+            let a = document.createElement('a'); // Erstelle ein 'a' Element
+            a.classList.add('hidden');
+            a.href = "https://www.developer-tech.com/"; // Setze die URL
+            a.textContent = "Klicke hier"; // Setze den angezeigten Text
+            document.body.appendChild(a); // Füge den Link zur Webseite hinzu
+
+            // 2. Simuliere einen Klick auf den Link
+            a.click(); // Dieser Befehl simuliert den Klick
+
+        }
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,33 @@
+<svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Main gradient: peach/beige to soft pink to light cyan -->
+    <linearGradient id="mainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f5dcc8;stop-opacity:1" />
+      <stop offset="35%" style="stop-color:#f9e8d9;stop-opacity:1" />
+      <stop offset="65%" style="stop-color:#f5e5e8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d4f0f0;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Radial overlay for subtle depth -->
+    <radialGradient id="radialOverlay" cx="70%" cy="70%">
+      <stop offset="0%" style="stop-color:#e8f5f5;stop-opacity:0.4" />
+      <stop offset="50%" style="stop-color:#f0e0d8;stop-opacity:0.2" />
+      <stop offset="100%" style="stop-color:#f5dcc8;stop-opacity:0" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Base gradient background -->
+  <rect width="1920" height="1080" fill="url(#mainGradient)"/>
+  
+  <!-- Radial overlay for depth -->
+  <rect width="1920" height="1080" fill="url(#radialOverlay)"/>
+  
+  <!-- Leoedit text in bottom right -->
+  <text x="1720" y="1020" 
+        font-family="Arial, sans-serif" 
+        font-size="72" 
+        font-weight="400"
+        fill="#2a2a2a" 
+        text-anchor="end"
+        opacity="0.9">Leoedit</text>
+</svg>

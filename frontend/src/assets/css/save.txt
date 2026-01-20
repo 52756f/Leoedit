@@ -1,0 +1,48 @@
+  /* File explorer tree styles */
+  .file-tree {
+      padding: 8px 0;
+  }
+
+  .tree-item {
+      display: flex;
+      align-items: center;
+      padding: 4px 8px 4px 16px;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.1s;
+  }
+
+  .tree-item:hover {
+      background-color: #2a2d2e;
+  }
+
+  .tree-item.selected {
+      background-color: #094771;
+  }
+
+  .tree-item .tree-icon {
+      width: 16px;
+      height: 16px;
+      margin-right: 8px;
+      flex-shrink: 0;
+      color: #cccccc;
+  }
+
+  .tree-item .tree-label {
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+  }
+
+  .tree-children {
+      margin-left: 16px;
+  }
+
+  .tree-item.expanded>.tree-children {
+      display: block;
+  }
+
+  .tree-item.collapsed>.tree-children {
+      display: none;
+  }

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Javascript Gauge</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f2f5;
+            margin: 0;
+        }
+        .gauge-container {
+            position: relative;
+            width: 300px;
+            height: 200px; /* Halber Kreis + Platz für Text */
+        }
+        canvas {
+            width: 100%;
+        }
+        .controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        input {
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        button {
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover { background-color: #0056b3; }
+    </style>
+</head>
+<body>
+
+    <div class="gauge-container">
+        <canvas id="gaugeCanvas" width="300" height="200"></canvas>
+    </div>
+
+    <div class="controls">
+        <input type="number" id="wertEingabe" min="0" max="100" value="50">
+        <button onclick="setValue()">Wert setzen</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gaugeCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Konfiguration
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height - 10; // Etwas Platz unten lassen
+        const radius = 130;
+        
+        // Animations-Status
+        let currentValue = 0;
+        let targetValue = 50;
+        
+        // Funktion zum Zeichnen
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // 1. Hintergrundbogen (Grau)
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, Math.PI, 0);
+            ctx.lineWidth = 20;
+            ctx.strokeStyle = '#e0e0e0';
+            ctx.stroke();
+
+            // 2. Farbige Segmente (Bereiche)
+            // Wir zeichnen drei Bögen für Rot, Gelb, Grün
+            drawSegment(0, 60, '#ff4d4d');   // Rot (0-60)
+            drawSegment(60, 85, '#ffcc00');  // Gelb (60-85)
+            drawSegment(85, 100, '#2ecc71'); // Grün (85-100)
+
+            // 3. Nadel zeichnen
+            // Winkel berechnen: PI (180deg) bis 2*PI (360deg)
+            const startAngle = Math.PI;
+            const endAngle = 2 * Math.PI;
+            const angleRange = endAngle - startAngle;
+            
+            // Wert auf Winkel mappen (mit Animation)
+            const percentage = currentValue / 100;
+            const needleAngle = startAngle + (percentage * angleRange);
+
+            // Trigonomie für Nadelspitze
+            const needleLength = radius - 10;
+            const tipX = centerX + needleLength * Math.cos(needleAngle);
+            const tipY = centerY + needleLength * Math.sin(needleAngle);
+
+            // Nadel zeichnen
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.lineTo(tipX, tipY);
+            ctx.lineWidth = 4;
+            ctx.strokeStyle = '#333';
+            ctx.lineCap = 'round';
+            ctx.stroke();
+
+            // Nadelkreuzung (Mittelpunkt)
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 8, 0, 2 * Math.PI);
+            ctx.fillStyle = '#333';
+            ctx.fill();
+
+            // 4. Text (Digitaler Wert)
+            ctx.font = 'bold 30px sans-serif';
+            ctx.fillStyle = '#333';
+            ctx.textAlign = 'center';
+            ctx.fillText(Math.round(currentValue), centerX, centerY + 40);
+            
+            // Kleiner Untertitel
+            ctx.font = '14px sans-serif';
+            ctx.fillStyle = '#666';
+            ctx.fillText("Speed", centerX, centerY + 60);
+        }
+
+        // Hilfsfunktion für farbige Segmente
+        function drawSegment(startVal, endVal, color) {
+            const startAngle = Math.PI + (startVal / 100 * Math.PI);
+            const endAngle = Math.PI + (endVal / 100 * Math.PI);
+            
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+            ctx.lineWidth = 20;
+            ctx.strokeStyle = color;
+            ctx.stroke();
+        }
+
+        // Animations-Loop für weiche Übergänge
+        function animate() {
+            if (Math.abs(targetValue - currentValue) < 0.1) {
+                currentValue = targetValue; // Genauigkeit erreichen
+            } else {
+                currentValue += (targetValue - currentValue) * 0.1; // Interpolation (Lerp)
+            }
+            draw();
+            requestAnimationFrame(animate);
+        }
+
+        // Wert setzen durch Button
+        function setValue() {
+            let input = document.getElementById('wertEingabe').value;
+            if(input < 0) input = 0;
+            if(input > 100) input = 100;
+            targetValue = parseFloat(input);
+        }
+
+        // Initialisierung
+        animate();
+        // Startwert animieren
+        targetValue = 50; 
+
+    </script>
+</body>
+</html>

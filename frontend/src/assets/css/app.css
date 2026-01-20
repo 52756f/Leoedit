@@ -1,0 +1,270 @@
+/* ===== VARIABLES ===== */
+:root {
+    --statusbar-height: 24px;
+    --menubar-height: 73px;
+}
+
+/* ===== RESET & BASE STYLES ===== */
+* {
+    box-sizing: border-box;
+}
+
+html {
+    height: 100vh;
+    width: 100%;
+}
+
+body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    font-family: system-ui, sans-serif;
+    display: flex;
+    color: #333;
+
+}
+
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    position: relative;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.menubar {
+    display: flex;
+    background-color: #f0f0f0;
+    color: black;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    user-select: none;
+    z-index: 1000;
+    flex-shrink: 0;
+}
+
+.menu-item {
+    position: relative;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 14px;
+    outline: none;
+    border: 0px solid transparent;
+    transition: box-shadow 0.2s ease;
+}
+
+.menu-item:hover {
+    cursor: default;
+    box-shadow: inset 0 0 0 1000px rgba(175, 178, 181, 0.5);
+}
+
+.submenu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    color: #2d3748;
+    min-width: 220px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    padding: 4px 0;
+    display: none;
+    z-index: 1001;
+    border: 1px solid #e2e8f0;
+}
+
+/* Submenu Items */
+.submenu-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+    cursor: default;
+    font-size: 14px;
+    transition: background-color 0.1s;
+    white-space: nowrap;
+}
+
+.submenu-item:is([aria-disabled="true"]) {
+    cursor: not-allowed;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.submenu-item:hover:not([aria-disabled="true"]) {
+    background-color: #edf2f7;
+}
+
+.submenu-item:focus {
+    background-color: #e2e8f0;
+    outline: none;
+    border: 2px solid #63b3ed;
+}
+
+.menu-item.active .submenu {
+    display: block;
+}
+
+/* ===== MENU ICONS ===== */
+/* Icons within Submenu */
+.submenu .menu-icon {
+    width: 16px;
+    height: 16px;
+    padding-right: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.submenu .menu-icon svg {
+    width: 100%;
+    height: 100%;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+}
+
+/* Separator */
+.separator {
+    height: 1px;
+    background-color: #e2e8f0;
+    margin: 4px 0;
+}
+
+/* ===== STATUS BAR ===== */
+
+/* Style for the footer container */
+footer {
+    background: #f0f0f0;
+    border-top: 1px solid #d0d0d0;
+    color: #000000;
+    height: 24px;
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    z-index: 100;
+}
+
+#status {
+    flex-grow: 1;
+    padding-left: 8px;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Error state */
+#status.error {
+    background: #297af3;
+    color: white;
+}
+
+/* Optional: Add resize handle */
+.resize-handle {
+    width: 3px;
+    background: #d0d0d0;
+    cursor: ew-resize;
+}
+
+
+/* ===== EDITOR LAYOUT ===== */
+.editor-container {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.editor-pane {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    background:
+        linear-gradient(135deg,
+            #ffe6d5 0%,
+            /* soft peach */
+            #fff8e6 25%,
+            /* creamy yellow */
+            #f9fbfc 50%,
+            /* off-white */
+            #e6f2f8 75%,
+            /* light sky blue */
+            #cce6f2 100%
+            /* soft blue */
+        );
+    position: relative;
+}
+
+/* Active pane styling */
+.editor-pane.active {
+    display: flex !important;
+}
+
+/* Monaco editor container */
+.monaco {
+    flex: 1;
+    min-height: 0;
+    position: relative;
+}
+
+[id^="monaco-editor-"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+/* Drag and drop styles */
+[id^="monaco-editor-"].drag-over {
+    border: 2px dashed #007acc !important;
+    background-color: rgba(0, 122, 204, 0.1) !important;
+}
+
+[id^="monaco-editor-"]*,
+.cm-editor {
+    pointer-events: auto !important;
+    /* ERLAUBT Interaktionen */
+}
+
+.cm-editor {
+    scroll-behavior: smooth;
+}
+
+/* Prevent text selection cursor during drag */
+[id^="monaco-editor-"].dragging-over {
+    user-select: none;
+    pointer-events: all;
+    /* Ensure events are captured */
+}
+
+.editor-pane.hidden {
+    display: none;
+}
+
+.editor-divider {
+    width: 4px;
+    background-color: #d0d0d0;
+    cursor: col-resize;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.editor-divider:hover {
+    background-color: #999;
+}
+
+.editor-divider.hidden {
+    display: none;
+}

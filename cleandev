@@ -1,0 +1,8 @@
+go clean -cache -modcache -i -r
+rm -rf .wails build/bin  # Wails-Cache und alte Builds löschen
+cd frontend
+rm -rf dist node_modules/.vite
+npm run build  # Sicherstellen, dass dist aktuell klein ist
+cd ..
+wails dev
+

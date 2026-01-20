@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buttons</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      background: #0f3460;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 20px;
+    }
+
+    .btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: none;
+      background-color: #007acc;
+      color: white;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: default;
+    }
+    
+    .icon{
+		color: white;
+		}
+
+    .btn.stop {
+      background: linear-gradient(145deg, #ef4444, #dc2626);
+    }
+  </style>
+</head>
+<body>
+  <div class="button-group">
+    <button class="btn"><img class="icon" src="https://unpkg.com/lucide-static@latest/icons/arrow-up.svg"/></button>
+    <button class="btn stop"><img src="https://unpkg.com/lucide-static@latest/icons/audio-lines.svg" /></button>
+  </div>
+</body>
+</html>
